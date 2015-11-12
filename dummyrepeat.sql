@@ -1,82 +1,4 @@
 
-select
-    user_id,
-	max(`a1`) as `<18`,
-	max(`a2`) as `[18:24]`,
-	max(`a3`) as `[25:29]`,
-	max(`a4`) as `[30:34]`,
-	max(`a5`) as `[35:39]`,
-	max(`a6`) as `[40:49]`,
-	max(`a7`) as `>50`,
-	max(`a8`) as Edad_Desconocida,
-    max(`g1`) as Femenino, 
-    max(`g2`) as Masculino, 
-    max(`g3`) as Genero_Desconocido 
-from
-(select 
-    user_id,
- 	case age_range when 1 then 1 else 0 end as a1,
-  	case age_range when 2 then 1 else 0 end as a2,
-  	case age_range when 3 then 1 else 0 end as a3,
-  	case age_range when 4 then 1 else 0 end as a4,
-  	case age_range when 5 then 1 else 0 end as a5,
-  	case age_range when 6 then 1 else 0 end as a6,
-  	case when age_range = 7 or age_range = 8 then 1 else 0 end as a7,
-	case when age_range = 0 or age_range = null then 1 else 0 end as a8,
-    case gender when 0 then 1 else 0 end as g1,
-    case gender when 1 then 1 else 0 end as g2,
-    case when gender = 2 or gender = null then 1 else 0 end as g3
-from user_info_format_1) t group by user_id limit 100;
-
-------------------------------
-
-select
-    user_id,
-	item_id,
-	cat_id,
-	merchant_id,
-	brand_id,
-	time_stamp,
-	max(`a1`) as `Click`,
-	max(`a2`) as `Carro`,
-	max(`a3`) as `Comprar`,
-	max(`a4`) as `Favorito`,
-	max(`a5`) as `Accion_desconocida`
-from
-(select 
-    user_id,
- 	item_id,
- 	cat_id,
- 	merchant_id,
- 	brand_id,
- 	time_stamp,
- 	case action_type when 0 then 1 else 0 end as a1,
-  	case action_type when 1 then 1 else 0 end as a2,
-  	case action_type when 2 then 1 else 0 end as a3,
-  	case action_type when 3 then 1 else 0 end as a4,
-  	case action_type when null then 1 else 0 end as a5
-from user_log_format_1) t group by user_id, item_id, cat_id, merchant_id, brand_id, time_stamp limit 100;
-
-
-------------------------------
-
-
-select
-    user_id,
-	merchant_id,
-	max(`a1`) as `Repetido`,
-	max(`a2`) as `No_repetido`,
-	max(`a3`) as `Tipo_desconocido`
-from
-(select 
-    user_id,
- 	merchant_id,
- 	case label when 0 then 1 else 0 end as a1,
-  	case label when 1 then 1 else 0 end as a2,
-  	case label when null then 1 else 0 end as a3
-from train_format_1) t group by user_id, merchant_id limit 100;
-
-
 -------------------------------
 
 Create table dummy_train_format_1 as
@@ -99,7 +21,7 @@ from train_format_1) t group by user_id, merchant_id;
 
 Create table dummy_user_log_format_1 as
 select
-    user_id,
+  user_id,
 	item_id,
 	cat_id,
 	merchant_id,
@@ -112,7 +34,7 @@ select
 	max(`a5`) as Accion_desconocida
 from
 (select 
-    user_id,
+  user_id,
  	item_id,
  	cat_id,
  	merchant_id,
@@ -123,7 +45,7 @@ from
   	case action_type when 2 then 1 else 0 end as a3,
   	case action_type when 3 then 1 else 0 end as a4,
   	case action_type when null then 1 else 0 end as a5
-from user_log_format_1) t group by user_id, item_id, cat_id, merchant_id, brand_id, time_stamp;
+from user_log_format_1) t group by user_id, item_id, cat_id, merchant_id, brand_id, time_stamp, a1, a2, a3, a4, a5;
 
 ---------------------------------
 
