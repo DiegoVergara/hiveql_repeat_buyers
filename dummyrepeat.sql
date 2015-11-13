@@ -15,7 +15,7 @@ from
  	case label when 0 then 1 else 0 end as a1,
   	case label when 1 then 1 else 0 end as a2,
   	case label when null then 1 else 0 end as a3
-from train_format_1) t group by user_id, merchant_id;
+from train_format_1) t group by user_id, merchant_id, a1, a2, a3;
 
 ---------------------------------
 
@@ -77,7 +77,7 @@ from
     case gender when 0 then 1 else 0 end as g1,
     case gender when 1 then 1 else 0 end as g2,
     case when gender = 2 or gender = null then 1 else 0 end as g3
-from user_info_format_1) t group by user_id;
+from user_info_format_1) t group by user_id, a1, a2, a3, a4, a5, a6, a7, a8, g1, g2, g3;
 
 -------------------------------------
 --JOIN
