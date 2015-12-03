@@ -1,7 +1,7 @@
 
 -------------------------------
 
-Create table dummy_train_format_1 as
+Create table dummie_train_format as
 select
     user_id as user_id,
 	merchant_id as merchant_id,
@@ -15,11 +15,11 @@ from
  	case label when 0 then 1 else 0 end as a1,
   	case label when 1 then 1 else 0 end as a2,
   	case label when null then 1 else 0 end as a3
-from train_format_1) t group by user_id, merchant_id, a1, a2, a3;
+from train_format) t group by user_id, merchant_id, a1, a2, a3;
 
 ---------------------------------
 
-Create table dummy_user_log_format_1 as
+Create table dummie_user_log_format as
 select
   user_id,
 	item_id,
@@ -45,11 +45,11 @@ from
   	case action_type when 2 then 1 else 0 end as a3,
   	case action_type when 3 then 1 else 0 end as a4,
   	case action_type when null then 1 else 0 end as a5
-from user_log_format_1) t group by user_id, item_id, cat_id, merchant_id, brand_id, time_stamp, a1, a2, a3, a4, a5;
+from user_log_format) t group by user_id, item_id, cat_id, merchant_id, brand_id, time_stamp, a1, a2, a3, a4, a5;
 
 ---------------------------------
 
-Create table dummy_user_info_format_1 as
+Create table dummie_user_info_format as
 select
     user_id,
 	max(`a1`) as menor18,
@@ -77,12 +77,12 @@ from
     case gender when 0 then 1 else 0 end as g1,
     case gender when 1 then 1 else 0 end as g2,
     case when gender = 2 or gender = null then 1 else 0 end as g3
-from user_info_format_1) t group by user_id, a1, a2, a3, a4, a5, a6, a7, a8, g1, g2, g3;
+from user_info_format) t group by user_id, a1, a2, a3, a4, a5, a6, a7, a8, g1, g2, g3;
 
 -------------------------------------
 --JOIN
 
-Create table dummy_join_table as
+Create table dummie_join_table as
 select
 c.user_id as user_id,
 b.menor18 as menor18,
@@ -109,9 +109,9 @@ c.accion_desconocida as accion_desconocida,
 a.no_repetido as no_repetido,
 a.repetido as repetido,
 a.tipo_desconocido as tipo_desconocido
-from dummy_user_log_format_1 c
+from dummy_user_log_format c
 left outer join 
-dummy_user_info_format_1 b on c.user_id = b.user_id
+dummy_user_info_format b on c.user_id = b.user_id
 left outer join 
-dummy_train_format_1 a on (c.user_id = a.user_id and c.merchant_id = a.merchant_id)
+dummy_train_format a on (c.user_id = a.user_id and c.merchant_id = a.merchant_id)
 ;
